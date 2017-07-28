@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom'
 
 class Message extends Component {
+
+  componentDidMount() {
+    console.log("Message component did mount fired.")
+    var node = ReactDOM.findDOMNode(this);
+    node.scrollIntoView();
+  }
+
   render() {
     // console.log("Rendering <Message/>");
     let colorStyle = {color:this.props.color}
