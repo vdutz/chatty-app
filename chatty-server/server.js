@@ -35,11 +35,11 @@ wss.on('connection', (client) => {
     uniqueID = uuidv4();
     if (message.type === "postMessage") {
       console.log("User " + message.username + " said: " + message.content)
-      messageObject = {type: "incomingMessage", id: uniqueID, username: message.username, content: message.content, color: message.color}
+      messageObject = {type: "incomingMessage", id: uniqueID, username: message.username, content: message.content, color: message.color, url: message.url}
       wss.broadcast(messageObject)
     } else if (message.type === "postNotification") {
       console.log("Notification sent.")
-      messageObject = {type: "incomingNotification", id: uniqueID, username: message.username, content: message.content, color: message.color}
+      messageObject = {type: "incomingNotification", id: uniqueID, username: message.username, content: message.content, color: message.color, url: message.url}
       wss.broadcast(messageObject)
     } else {
       console.log("Error reading message type.")

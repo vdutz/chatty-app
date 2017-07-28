@@ -68,6 +68,12 @@ body {
   font-weight: 700;
 }
 
+.message-image {
+  display: block;
+  width: 60%;
+  margin-top: 10px;
+}
+
 .navbar {
   background: tomato;
   border-bottom: 1px solid black;
@@ -102,4 +108,3 @@ body {
   padding: 0 10px;
   text-decoration: none;
 }
-

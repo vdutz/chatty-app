@@ -57,31 +57,45 @@ class App extends Component {
     if (event.key === 'Enter') {
       console.log("Enter key pressed.")
 
-      const newMessage = {type: "postMessage", username: this.state.currentUser.name, content: event.target.value, color: this.state.color}
+      // const newMessage = {type: "postMessage", username: this.state.currentUser.name, content: event.target.value, color: this.state.color, url: "/"}
 
-      console.log("This.socket: ", this.socket)
+      let textToTest = event.target.value
+      let result = textToTest.match(/[^\s]+(\.png$|\.gif$|\.jpg$)/)
 
-      this.socket.send(JSON.stringify(newMessage))
-
-      this.socket.onmessage = function(event) {
-        const message = JSON.parse(event.data)
-
-        switch(message.type) {
-          case "incomingMessage":
-            let messages = this.state.messages.concat(message)
-            this.setState({messages: messages})
-            break;
-          case "incomingNotification":
-            let messages2 = this.state.messages.concat(message)
-            this.setState({messages: messages2})
-            break;
-          default:
-            throw new Error("Unknown event type " + message.type);
-        }
-
+      if (!result) {
+        let newMessage = {type: "postMessage", username: this.state.currentUser.name, content: event.target.value, color: this.state.color, url: "/"}
+        this.socket.send(JSON.stringify(newMessage))
+      } else {
+        let url = result["0"]
+        let content = event.target.value.replace(url, "")
+        console.log("Remaining content: ", content)
+        let newMessage = {type: "postMessage", username: this.state.currentUser.name, content: content, color: this.state.color, url: url}
+        this.socket.send(JSON.stringify(newMessage))
       }
+      console.log("Match result: ", result)
 
-      this.socket.onmessage = this.socket.onmessage.bind(this)
+
+      // this.socket.send(JSON.stringify(newMessage))
+
+      // this.socket.onmessage = function(event) {
+      //   const message = JSON.parse(event.data)
+
+      //   switch(message.type) {
+      //     case "incomingMessage":
+      //       let messages = this.state.messages.concat(message)
+      //       this.setState({messages: messages})
+      //       break;
+      //     case "incomingNotification":
+      //       let messages2 = this.state.messages.concat(message)
+      //       this.setState({messages: messages2})
+      //       break;
+      //     default:
+      //       throw new Error("Unknown event type " + message.type);
+      //   }
+
+      // }
+
+      // this.socket.onmessage = this.socket.onmessage.bind(this)
 
       event.target.value = ""
     }
@@ -94,14 +108,22 @@ class App extends Component {
     }
 
     this.socket.onmessage = function(event) {
-      const messages = JSON.parse(event.data)
-      console.log("Incoming message: ", messages)
-      if (messages.type === "userSize") {
-        this.setState({users: messages.users})
-      } else if (messages.type === "userColor") {
-        console.log("User color: ", messages.color)
-        this.setState({color: messages.color})
+      let message = JSON.parse(event.data)
+      console.log("Incoming message: ", message)
+      if (message.type === "userSize") {
+        this.setState({users: message.users})
+      } else if (message.type === "userColor") {
+        console.log("User color: ", message.color)
+        this.setState({color: message.color})
         console.log("State color: ", this.state.color)
+      } else if (message.type === "incomingMessage") {
+        let messages = this.state.messages.concat(message)
+        this.setState({messages: messages})
+      } else if (message.type === "incomingNotification") {
+        let messages2 = this.state.messages.concat(message)
+        this.setState({messages: messages2})
+      } else {
+        throw new Error("Unknown event type " + message.type);
       }
     }
 
