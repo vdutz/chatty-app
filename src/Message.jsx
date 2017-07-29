@@ -4,16 +4,15 @@ import ReactDOM from 'react-dom'
 class Message extends Component {
 
   componentDidMount() {
-    console.log("Message component did mount fired.")
+    // Scrolls to the bottom of the message thread when a new message is posted
+    console.log("Message component did mount fired.");
     var node = ReactDOM.findDOMNode(this);
     node.scrollIntoView();
   }
 
   render() {
-    // console.log("Rendering <Message/>");
-    let colorStyle = {color:this.props.color}
-    // let x = undefined
-    let image
+    let colorStyle = {color:this.props.color};
+    let image;
     if (this.props.url === "/") {
       image = <span>{undefined}</span>
     } else {
@@ -36,7 +35,7 @@ class Message extends Component {
         );
         break;
       default:
-        throw new Error("Unknown event type " + this.props.type)
+        throw new Error("Unknown event type " + this.props.type);
     }
   }
 }

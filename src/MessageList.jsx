@@ -3,9 +3,8 @@ import Message from './Message.jsx';
 
 class MessageList extends Component {
   render() {
-    // console.log("Rendering <MessageList/>");
-    const messages = this.props.messages
-    const messageItems = messages.map((message) =>
+    let messages = this.props.messages;
+    let messageItems = messages.map((message) =>
       <Message url={message.url} color={message.color} type={message.type} username={message.username} content={message.content} key={message.id} />
     );
     return (
