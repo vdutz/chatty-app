@@ -6,7 +6,8 @@ The app was designed with React for the front-end, WebSockets for the chat funct
 
 ## Final Product
 
-A Sample Chat in Progress
+### A Sample Chat in Progress
+
 !["Sample Chat in Progress"](https://github.com/vdutz/chatty-app/blob/master/docs/chat-in-progress.png?raw=true)
 
 ## Getting Started
